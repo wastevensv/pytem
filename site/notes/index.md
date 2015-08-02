@@ -1,2 +1,3 @@
 siteroot : ..
+template : template
 ---
