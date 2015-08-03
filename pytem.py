@@ -23,20 +23,24 @@ def create_tree(src,dst): # Create directory tree from src in dst
   try:
     shutil.copytree(src,dst,ignore=md_files_only) # If directory doesn't exist yet, just make it.
   except FileExistsError as e: # If directory already exists, prompt before deleting.
+    if os.environ.get('PROMPT',"yes").lower() == "no":
+      shutil.rmtree(dst)
+      create_tree(src,dst)
+      return
     sys.stdout.write("%s exists, Overwrite (y/n) "%dst)
     overwrite = input()
-    if overwrite == 'y' or overwrite == 'Y':
+    if overwrite == 'y' or overwrite == 'Y': # If user agrees, delete and try again.
       print_err("Deleting %s"%dst)
       shutil.rmtree(dst)
       print_err("Creating directories")
-      shutil.copytree(src,dst,ignore=md_files_only)
+      create_tree(src,dst)
     else: # Exit with error if not overwriting.
       print_err("Directory exists, not overwriting, exiting.")
-      sys.exit(-1)
+      sys.exit(1)
 
 if len(sys.argv) != 4: # print usage instructions if any parameters are missing.
   print("Usage: %s <templatedir> <indir> <outdir>"%sys.argv[0])
-  sys.exit(-1)
+  sys.exit(0)
 
 templatedir = sys.argv[1]
 indir = sys.argv[2]
