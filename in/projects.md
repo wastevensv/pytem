@@ -1,9 +1,8 @@
 title : Projects
 date : 15-07-25
 siteroot : .
-template : template
+template : post
 ---
-# Projects
 I build projects mostly for fun, learning something or making something useful is always a great byproduct. Below are some links to some of my projects. I hope they can be useful to someone.
 
 ## [AIML Designer](https://github.com/wastevensv/AIML-Designer)
