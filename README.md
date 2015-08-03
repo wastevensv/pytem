@@ -1,4 +1,4 @@
-# pytem
+# pytem[![Build Status](https://travis-ci.org/wastevensv/pytem.svg?branch=master)](https://travis-ci.org/wastevensv/pytem)
 A minimal, no logic, python template script.
 
 ## Command Syntax
