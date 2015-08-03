@@ -5,10 +5,7 @@ import re, os, shutil, sys, markdown
 
 def get_subdir(dirs):
   subdirs = dirs.split(os.sep)[1:] # return subdirectory path exclduing the root directory
-  if not subdirs[0] == '':
-    return os.sep.join(subdirs)
-  else:
-    return ""
+  return os.sep.join(subdirs)
 
 def dirs_only(src,names):
   if src.endswith("res"): # Copy files from resource folders
