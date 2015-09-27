@@ -1,5 +1,5 @@
 import os, sys
-from pytem import Pytem
+from .pytem import Pytem
 
 subject = Pytem("template",'globalfile')
 
