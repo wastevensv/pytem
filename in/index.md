@@ -1,6 +1,5 @@
 title : Index
 date : 15-07-25
-siteroot : .
 template : template
 ---
 # Heading 1
