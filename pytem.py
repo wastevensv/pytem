@@ -49,7 +49,9 @@ class Pytem:
 
     def render_string(self, text, html=False):
         try:  # Check for data/content delimiter (---)
-            (data, content) = text.split('---')
+            parts = text.split('---')
+            data = parts[0]
+            content = '---'.join(parts[1:])
         except:
             raise Exception("Bad file format, missing content, or content divider (---).")
 
