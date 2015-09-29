@@ -48,12 +48,16 @@ class Pytem:
         return tags
 
     def render_string(self, text, html=False):
-        try:  # Check for data/content delimiter (---)
-            parts = text.split('---')
+        parts = text.split('---')
+        if len(parts) == 1:
+            content = text
+            data = ""
+        elif len(parts) == 2:
             data = parts[0]
-            content = '---'.join(parts[1:])
-        except:
-            raise Exception("Bad file format, missing content, or content divider (---).")
+            content = parts[1]
+        else:
+            data = parts[0]
+            content = "---".join(parts[1:])
 
         local_tags = self.parse_string(data)
         tags = self.global_tags.copy()
