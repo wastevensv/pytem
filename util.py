@@ -13,24 +13,34 @@ def get_subdir(dirs):
     return os.sep.join(subdirs)
 
 
-def create_tree(src, dst):  # Create directory tree from src in dst
-    try:
-        shutil.copytree(src, dst, ignore=md_files_only)  # If directory doesn't exist yet, just make it.
-    except OSError as e:  # If directory already exists, prompt before deleting.
-        if os.environ.get('PROMPT', "yes").lower() == "no":
-            shutil.rmtree(dst)
-            create_tree(src, dst)
-            return
-        sys.stdout.write("%s exists, Overwrite (y/n) " % dst)
-        overwrite = input()
-        if overwrite == 'y' or overwrite == 'Y':  # If user agrees, delete and try again.
-            print_err("Deleting %s" % dst)
-            shutil.rmtree(dst)
-            print_err("Creating directories")
-            create_tree(src, dst)
-        else:  # Exit with error if not overwriting.
-            raise Exception("Directory exists, not overwriting, exiting.")
+def delete_tree(dst):  # Create directory tree from src in dst
+    for name in os.listdir(dst):
+            if name == ".git":
+                continue
+            if os.path.isdir(os.path.join(dst, name)):
+                print_err("Deleting %s" % os.path.join(dst,name))
+                delete_tree(os.path.join(dst, name))
+                os.rmdir(os.path.join(dst, name))
+                continue
+            print_err("Deleting %s" % os.path.join(dst,name))
+            os.remove(os.path.join(dst, name))
 
+def create_tree(src, dst):
+    copy_files(src, dst)
+    print_err("Creating directories in %s"%dst)
+    for name in os.listdir(src):
+        print_err("Copying %s" % os.path.join(src, name))
+        if os.path.isdir(os.path.join(src, name)):
+                print_err("Copying Directory %s" % os.path.join(src, name))
+                os.mkdir(os.path.join(dst, name))
+                create_tree(os.path.join(src, name), os.path.join(dst, name))
+
+def copy_files(src, dst):
+    print_err("Creating files in %s"%dst)
+    for name in os.listdir(src):
+        if not os.path.isdir(os.path.join(src, name)) and not name.endswith('.md'):
+            print_err("Copying File %s" % os.path.join(src, name), os.path.join(dst, name))
+            shutil.copy(os.path.join(src, name), os.path.join(dst, name))
 
 def md_files_only(src, names):
     ignore = [n for n in names if n.endswith('.md')]
