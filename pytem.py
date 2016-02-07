@@ -3,7 +3,7 @@ from __future__ import print_function
 import re
 import markdown
 from sys import argv
-from util import *
+from .util import *
 
 try:
     input = raw_input
